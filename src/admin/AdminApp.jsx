@@ -520,6 +520,15 @@ export default function AdminApp({ user }) {
     );
   };
 
+  const toggleKitchenLive = (restaurant) => {
+    const profile = getProfile(restaurant, restaurantProfiles);
+    updateRestaurantProfile(
+      restaurant,
+      { kitchenLive: !profile.kitchenLive },
+      profile.kitchenLive ? "Kitchen livestream paused." : "Kitchen livestream is now LIVE."
+    );
+  };
+
   const saveRestaurantHours = (restaurant) => {
     updateRestaurantProfile(
       restaurant,
@@ -669,6 +678,7 @@ export default function AdminApp({ user }) {
           onDraftChange={setScheduleDraft}
           onTogglePause={toggleRestaurantPause}
           onToggleItem={toggleItemAvailability}
+          onToggleKitchenLive={toggleKitchenLive}
           onSaveHours={saveRestaurantHours}
         />
 
@@ -855,6 +865,7 @@ function RestaurantOpsPanel({
   onDraftChange,
   onTogglePause,
   onToggleItem,
+  onToggleKitchenLive,
   onSaveHours
 }) {
   const selected = restaurants.find((restaurant) => restaurant.id === selectedId) || restaurants[0];
@@ -885,6 +896,10 @@ function RestaurantOpsPanel({
         <div className="admin-info">
           <span>Menu item</span>
           <strong>{itemAvailable ? "Available" : "Out of stock"}</strong>
+        </div>
+        <div className="admin-info">
+          <span>Kitchen Live</span>
+          <strong>{profile.kitchenLive ? "Live" : "Off"}</strong>
         </div>
         <label className="admin-info">
           <span>Open hour</span>
@@ -918,6 +933,9 @@ function RestaurantOpsPanel({
         </button>
         <button className="secondary-button" onClick={() => onToggleItem(selected)} disabled={busyId === selected.id} type="button">
           {itemAvailable ? "Mark out of stock" : "Mark in stock"}
+        </button>
+        <button className="secondary-button" onClick={() => onToggleKitchenLive(selected)} disabled={busyId === selected.id} type="button">
+          {profile.kitchenLive ? "Stop Stream" : "Go Live"}
         </button>
         <button className="secondary-button" onClick={() => onSaveHours(selected)} disabled={busyId === selected.id} type="button">
           Save hours
