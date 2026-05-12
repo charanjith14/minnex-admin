@@ -599,13 +599,21 @@ export default function AdminApp({ user }) {
 
       <main className="admin-content">
         <section className="admin-hero">
-          <div>
-            <p className="eyebrow">Minnex Biz</p>
-            <h1>Orders, availability, support, and settlements in one desk.</h1>
+          <div className="hero-glow admin-glow"></div>
+          <div className="hero-content">
+            <span className="premium-badge admin-badge">🛡️ ADMIN COMMAND CENTER</span>
+            <h1>Operations Intelligence</h1>
+            <p>Real-time oversight of orders, logistics, and merchant health. Powered by Minnex AI.</p>
           </div>
-          <div className="admin-live-card">
-            <span>New orders</span>
-            <strong>{stats.restaurantQueue}</strong>
+          <div className="admin-quick-stats">
+            <div className="stat-card pulse">
+              <span>LIVE ORDERS</span>
+              <strong>{stats.active}</strong>
+            </div>
+            <div className="stat-card">
+              <span>DEMAND</span>
+              <strong>{stats.restaurantQueue > 3 ? 'HIGH' : 'STABLE'}</strong>
+            </div>
           </div>
         </section>
 
@@ -632,19 +640,34 @@ export default function AdminApp({ user }) {
           </article>
         </section>
 
-        <section className="admin-metrics" aria-label="Minnex Biz overview">
-          <Metric label="Total" value={stats.total} />
-          <Metric label="Kitchen" value={stats.active} />
-          <Metric label="Delivery queue" value={stats.deliveryQueue} />
-          <Metric label="Assigned" value={stats.assigned} />
-          <Metric label="Feedback" value={stats.feedback} />
-          <Metric label="Food avg" value={stats.averageFood} />
-          <Metric label="Paid" value={`Rs ${stats.paidRevenue}`} />
-          <Metric label="Platform rev" value={`Rs ${stats.platformRevenue}`} />
-          <Metric label="Restaurant due" value={`Rs ${stats.restaurantSettlement}`} />
-          <Metric label="Partner payout" value={`Rs ${stats.partnerPayout}`} />
-          <Metric label="Tips" value={`Rs ${stats.tips}`} />
-          <Metric label="Support" value={stats.openTickets} />
+        <section className="admin-metrics-grid" aria-label="Minnex Biz overview">
+          <div className="metric-group revenue">
+            <h3>Revenue & Settlements</h3>
+            <div className="metric-row">
+              <Metric label="Paid Revenue" value={`₹${stats.paidRevenue}`} />
+              <Metric label="Platform Fee" value={`₹${stats.platformRevenue}`} />
+              <Metric label="Rest. Settlement" value={`₹${stats.restaurantSettlement}`} />
+              <Metric label="Agent Payout" value={`₹${stats.partnerPayout}`} />
+            </div>
+          </div>
+          <div className="metric-group ops">
+            <h3>Operations</h3>
+            <div className="metric-row">
+              <Metric label="Total Orders" value={stats.total} />
+              <Metric label="In Kitchen" value={stats.active} />
+              <Metric label="Wait Queue" value={stats.deliveryQueue} />
+              <Metric label="Assigned" value={stats.assigned} />
+            </div>
+          </div>
+          <div className="metric-group health">
+            <h3>Health & Satisfaction</h3>
+            <div className="metric-row">
+              <Metric label="Avg Food Rating" value={`${stats.averageFood}/5.0`} />
+              <Metric label="Open Tickets" value={stats.openTickets} />
+              <Metric label="Total Feedbacks" value={stats.feedback} />
+              <Metric label="Active Agents" value={stats.agents} />
+            </div>
+          </div>
         </section>
 
         {message && <p className="notice admin-notice">{message}</p>}
